@@ -1,6 +1,6 @@
 #Ex1 Q1
 import util
-import math
+import ma
 def disque ():
     ray=util.saisir_entier()
     surf=math.pi*ray*ray
