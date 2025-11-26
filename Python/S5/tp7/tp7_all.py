@@ -14,12 +14,9 @@ Liste d'adjacence   |   O(k)               | O(1)          | O(k)          | O(k
 Matrice d'adja      |   O(n)               | O(1)          | O(1)          | O(1)
 """
 
-#sym si matrice orienté
-#autant de 1 que d'aretes si pas symetrique
-
-#test dadja entre 2 sommetes via 2 dicos
+#listes adja en tant que dico et test d'adja entre 2 sommetes via 2 dicos
 #se poser les bonnes questions sur représentation
-#listes adja en tant que dico
+
 
 import numpy as np
 mat_test=np.array([[0,1,1,0,0,0],
@@ -28,12 +25,11 @@ mat_test=np.array([[0,1,1,0,0,0],
             [0,0,0,0,1,1],
             [0,0,0,0,0,1],
             [0,0,0,0,0,0]])
-
-#si matrice non orienté
-def est_symetrique(M):
-    return np.array_equal(M, M.T)
-B=np.array([[0,1,1,0],
+mat_test2=np.array([[0,1,1,0],
             [1,0,1,1],
             [1,1,0,1],
             [0,1,1,0]]) 
-print(est_symetrique(B))
+
+#Verif si matrice est orienté# cad si sym
+def oriente(M):
+    if ...
