@@ -52,4 +52,5 @@ def nbVoisins(M,i,j):
     compt = M[i][j+1] + M[i][j-1] +  M[i+1][j] + M[i-1][j]
     return compt
 
-game_of_life(4)
+if __name__ == "__main__":
+    game_of_life(4)

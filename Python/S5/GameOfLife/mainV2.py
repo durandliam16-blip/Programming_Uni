@@ -11,12 +11,6 @@ GREEN = '\033[92m'
 RED = '\033[91m'
 ENDC = '\033[0m'
 
-a=int(input("Quel taille de grille ? "))
-grid_size = a
-border_offset = 1
-real_grid_size = grid_size + 2 * border_offset
-range_coords = range(border_offset, grid_size + border_offset)
-
 def ChangeEtat(M: Grid):
     M_new = copy.deepcopy(M)
     
@@ -60,6 +54,12 @@ def ImprimeDifférence(M_init: Grid, M_new: Grid):
         print()
 
 def ConfigInit():
+    a=int(input("Quel taille de grille ? "))
+    grid_size = a
+    border_offset = 1
+    real_grid_size = grid_size + 2 * border_offset
+    range_coords = range(border_offset, grid_size + border_offset)
+
     M = [[0 for i in range(real_grid_size)] for _ in range(real_grid_size)]
     print("The grid is initiated !")
 
