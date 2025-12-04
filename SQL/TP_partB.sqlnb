@@ -1,0 +1,12 @@
+cells:
+  - kind: 2
+    value: "-- Partie B\r
+
+      \r
+
+      -- Movie(mID, title, year_, director)\r
+
+      -- Reviewer(rID, name_)\r
+
+      -- Rating(rID, mID, stars, ratingDate)"
+    languageId: oracle-sql
