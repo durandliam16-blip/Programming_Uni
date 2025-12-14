@@ -41,7 +41,8 @@ class List:
         else: 
             current = Node(item) #instancie
             self.last.next = current #l'ajoute fin
-            current.previous = self.lastself.last = current
+            current.previous = self.last
+            self.last = current
 
     #Noeud en para et non item
     def add_node(self, node): 
@@ -156,3 +157,16 @@ class List:
                 node=node.next
             node.previous.next=node.next
             node.next.previous=node.previous
+
+if __name__ == "__main__":
+    liste = List()
+    liste.add_end(1)
+    liste.add_end(2)
+    liste.add_end(3)
+    liste.add_end(4)
+    liste.add_end(5)
+    print("Taille :", liste.lenght()) #5
+    liste.pop(2)
+    print("Taille après pop 2 :", liste.lenght()) #4
+    node = liste.get_node(2)
+    print("Noeud à l'index 2 après pop :", node.item) #4

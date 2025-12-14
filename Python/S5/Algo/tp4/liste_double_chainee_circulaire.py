@@ -1,5 +1,7 @@
 """Liste doublement chainée circulaire"""
 
+from __future__ import annotations
+
 ##Ex1 
 #Q1
 class Cell: #Sert juste à initialiser cellule
@@ -70,16 +72,32 @@ class LinkedList: #pour modifs et commandes
     #Q2
     #nouvelle fin
     def insert_first(self, item):
-        nouveau = Cell(item) 
-        nouveau.next = self.first #l'ancien premier noeud
-        self.first.prev = nouveau #mtn noeud le precede
-        self.first = nouveau #devient premier
+        nouveau = Cell(item)
+        if self.first is None and self.last is None:
+            nouveau.next = nouveau
+            nouveau.prev = nouveau
+            self.first = nouveau
+            self.last = nouveau
+        else:
+            nouveau.next = self.first
+            nouveau.prev = self.last
+            self.first.prev = nouveau
+            self.last.next = nouveau
+            self.first = nouveau
     #nouvelle tete
     def insert_fin(self, item):
-        nouveau = Cell(item) 
-        nouveau.prev = self.last #l'ancien premier noeud
-        self.last.next = nouveau #mtn noeud le precede
-        self.last = nouveau #devient premier
+        nouveau = Cell(item)
+        if self.first is None and self.last is None:
+            nouveau.next = nouveau
+            nouveau.prev = nouveau
+            self.first = nouveau
+            self.last = nouveau
+        else:
+            nouveau.prev = self.last
+            nouveau.next = self.first
+            self.last.next = nouveau
+            self.first.prev = nouveau
+            self.last = nouveau
 
     #Q3 - afficher liste
     def __str__(self) -> str : 
@@ -88,7 +106,8 @@ class LinkedList: #pour modifs et commandes
         while courant != self.last:
             liste.append(courant.val)
             courant=courant.next
-        print(liste)
+        liste.append(self.last.val) if self.last is not None else None
+        return str(liste)
 
     #Q4 - verif debut et fin lié et pas vide
     def isChained(self) -> bool:
@@ -148,3 +167,11 @@ class LinkedList: #pour modifs et commandes
         liste.last.next = self.first
         self.first.prev = liste.last
         return self
+    
+if __name__ == "__main__":
+    chaine = LinkedList()
+    chaine.insert_fin(10)
+    chaine.insert_fin(20)
+    chaine.insert_first(5)  
+    print("Taille :", chaine.size())  # Taille : 3
+    print(chaine)

@@ -17,15 +17,17 @@ class Deque: #pour modifs et commandes
 
     #def la taille
     def size(self):
+        if self.first is None:
+            return 0
         courant = self.first
-        i=0
-        while courant != self.last:
-            courant= courant.next
-            i+=1
-        return i+1
+        i = 1
+        while courant is not self.last:
+            courant = courant.next
+            i += 1
+        return i
     #verif si vide
     def is_empty(self):
-        return self.size == 0 
+        return self.first is None
 
     #ajoute en premier
     def insert_debut(self, val):
@@ -58,7 +60,7 @@ class Deque: #pour modifs et commandes
         if self.is_empty():
             raise IndexError("Suppression sur une liste vide")
         val = self.first.val
-        if self.size == 1:
+        if self.size() == 1:
             self.first = self.last = None
         else:
             self.first = self.first.next
@@ -71,7 +73,7 @@ class Deque: #pour modifs et commandes
         if self.is_empty():
             raise IndexError("Suppression sur une liste vide")
         val = self.last.val
-        if self.size == 1:
+        if self.size() == 1:
             self.first = self.last = None
         else:
             self.last = self.last.prev
@@ -82,5 +84,18 @@ class Deque: #pour modifs et commandes
     #affiche bouts
     def see_first(self):
         return self.first.val
-    def see_first(self):
+    def see_last(self):
         return self.last.val
+    
+if __name__ == "__main__":
+    deque = Deque()
+    deque.insert_fin(10)
+    deque.insert_fin(20)
+    deque.insert_debut(5)
+    print("Taille :", deque.size())  # Taille : 3
+    print("Premier élément :", deque.see_first())  # Premier élément : 5
+    print("Dernier élément :", deque.see_last())    # Dernier élément : 20
+    deque.remove_first()
+    print("Premier élément après suppression :", deque.see_first())  # Premier élément après suppression : 10
+    deque.remove_last()
+    print("Dernier élément après suppression :", deque.see_last())    # Dernier élément après suppression : 10
