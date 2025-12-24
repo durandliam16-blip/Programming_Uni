@@ -1,5 +1,6 @@
 def saisir_entier(invite: str = 'Saisir un nombre entier : ',escape: str | None = None) -> int | None:
     x=input(invite)
+    #relance erreurs
     try:
         if x==escape or x=="":
           return None

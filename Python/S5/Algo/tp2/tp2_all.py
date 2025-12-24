@@ -1,18 +1,18 @@
-#Ex1
+##Ex1
 def facto(n):
     if n==1 or n==0:
         return 1
     else:
         return n*facto(n-1)
 
-#Ex2
+##Ex2
 def pgcd(a,b):
     if b==0:
         return a
     else:
         return(pgcd(b,a%b))
 
-#Ex3
+##Ex3
 #Q1
 def fibo(n):
     if n==0:
@@ -21,10 +21,25 @@ def fibo(n):
         return 1
     else:
         return (fibo(n-1)+fibo(n-2))
+
 #Q2
-"""liste=[]
+liste=[]
 for i in range(0,40):
-    liste.append(fibo(i))"""
+    liste.append(fibo(i))
+
+#Q3
+"""
+F6
+├── F5
+│   ├── F4
+│   │   ├── F3
+│   │   └── F2
+│   └── F3
+└── F4
+    ├── F3
+    └── F2
+"""
+
 #Q4
 def fibo2(n):
     if n==0:
@@ -36,9 +51,11 @@ def fibo2(n):
         for i in range (2,n+1):
             a,b=b,a+b
         return b
-#print([fibo2(i) for i in range(20)])
+#Q5
+print([fibo2(i) for i in range(20)])
 
-#Ex4
+##Ex4
+#Q1-2
 """quotient de div de n par 10 donne le nb de dizaines de n (5478 donne 547)"""
 def nb_digits(n: int,base) -> int:
     if n ==0:
@@ -48,6 +65,7 @@ def nb_digits(n: int,base) -> int:
         n=n//base
         compt+=1
     return compt
+
 #Q3
 def convert(n: int, base: int) -> str:
     if n<base:
@@ -55,6 +73,7 @@ def convert(n: int, base: int) -> str:
     else:
         convert(n//base,base)
         print(n%base)
+
 #Q4
 def convert_mirror(n,base):
     if n<base:
@@ -69,8 +88,10 @@ def binom(n:int,k:int)->int:
     if k==0 or n==k:
         return 1
     return binom(n-1,k-1)+binom(n-1,k)
+
 #Q2
 #print(binom(100,50)) trop long
+
 #Q3
 def binom_memo(n:int,k:int,dico)->int:
     if k==0 or n==k:
@@ -81,7 +102,7 @@ def binom_memo(n:int,k:int,dico)->int:
         dico[(n,k)]= binom_memo(n-1,k-1,dico)+binom_memo(n-1,k,dico)
     return dico[(n,k)]
 
-#Ex6
+##Ex6
 def robot_cupide(damier: list[list[int]],trajet ,x: int =0, y: int =0) -> int:
     trajet[(x, y)] = damier[x][y]
     if x==len(damier)-1 or y==len(damier[0])-1:
@@ -98,7 +119,7 @@ def robot_cupide(damier: list[list[int]],trajet ,x: int =0, y: int =0) -> int:
             return robot_cupide(damier,trajet,x,y+1) #decale
 #print(robot_cupide([[1,2,3],[4,5,6],[7,8,9]],{}))
 
-#Ex7
+##Ex7
 def hanoi(n,source,target,aux):
     if n== 1:
         print(f"deplace le disque 1 de {source} vers {target}")
@@ -112,6 +133,7 @@ def hanoi(n,source,target,aux):
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
+
 def triangle(x,y,c):
    plt.fill([x,x+c,x+c/2],[y,y,y+c*np.sqrt(3)/2],"b")
 def t2s(n,x,y,c):

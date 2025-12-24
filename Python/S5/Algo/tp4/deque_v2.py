@@ -1,6 +1,7 @@
 from typing import Any, Optional
 
 #Deque basique comme Ex4
+#Est utilisé par deux autres classes
 class Deque:
     def __init__(self):
         self._items = [] 
@@ -25,7 +26,8 @@ class Stack:
     """
     def __init__(self):
         # Composition : La Stack "possède" un Deque
-        self._container = Deque()
+        self._container = Deque() 
+        #permet d'utiliser fonctions deja def en réutilisant self._container
     def is_empty(self) -> bool:
         return self._container.is_empty()
     def push(self, item: Any):

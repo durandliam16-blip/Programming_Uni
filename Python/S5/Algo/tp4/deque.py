@@ -1,3 +1,5 @@
+"""Piles et files combinés sous format liste chainée circulaire doublement liée."""
+
 class Cell: #Sert juste à initialiser cellule
     def __init__(self, valeur=None,precedent=None,suivant=None):
         self.val= valeur

@@ -5,11 +5,12 @@ from typing import Optional, List
 def max_naive(nums: List[int], k: int) -> List[int]:
     taille = len(nums)
     if taille * k == 0:
+        #verif taille et int en meme temps
         return []
     resultats = []
     for i in range(taille - k + 1):
         #Extrait la sous-séquence
-        fenetre = nums[i : i + k]
+        fenetre = nums[i : i + k] #remplace la 2ème boucle
         #Prend le max 
         resultats.append(max(fenetre))
     return resultats
@@ -38,8 +39,8 @@ class Deque:
         """Regarde la valeur en queue sans la retirer."""
         return self._data.get_tail_value()
     
+#Implémentation de la liste, l'arrière avec le détail
 class Cell:
-    #Implémentation de la lite, l'arruère avec le dérail
     def __init__(self, value: int):
         self.value = value
         self.prev: Optional['Cell'] = None

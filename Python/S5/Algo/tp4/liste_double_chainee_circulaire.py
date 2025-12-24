@@ -1,4 +1,5 @@
-"""Liste doublement chainée circulaire"""
+"""Liste doublement chainée circulaire
+cad possède val et indicateur suivant + dernier"""
 
 from __future__ import annotations
 
@@ -10,8 +11,8 @@ class Cell: #Sert juste à initialiser cellule
         self.prev= precedent
         self.next= suivant
 
-#Q2
 class LinkedList: #pour modifs et commandes
+    #Q2
     def __init__(self,premier=None,dernier=None):
         self.first=premier
         self.last=dernier
@@ -22,11 +23,15 @@ class LinkedList: #pour modifs et commandes
             self.first.prev = self.last
             self.last.next = self.first
 
-    #Q3
     #verif si vide
     def is_empty(self):
-        return self.size == 0
-    #def la taille
+        if self.first is None and self.last is None:
+            return True
+        else:
+            return False
+
+    #Q3
+    #la taille
     def size(self):
         courant = self.first
         i=0
@@ -34,27 +39,33 @@ class LinkedList: #pour modifs et commandes
             courant= courant.next
             i+=1
         return i+1
+
     #renvoie le premier
     def head(self):
+        if self.first is None:
+            return None
         return self.first
+    #renvoie le dernier
     def tail(self):
+        if self.last is None:
+            return None
         return self.last
 
 ##Ex2
     #Q1
-    #insère à place déf
+    #insère à place choisie
     def insert(self, item: int, neighbor: Cell, after: bool = True) -> LinkedList:
         courant=self.first
         while courant != neighbor: 
         #s'asssure select le bon en décalant au fur et à mesure
             courant = courant.next
-        if courant.next == self.first: 
+        if courant.next == self.first:
         #verif pas dernier
             after = False
         if after==True:
             nouveau = Cell(item)
             suivant = courant.next
-            # insérer entre courant et suivant
+            #insérer entre courant et suivant
             courant.next = nouveau
             nouveau.prev = courant
             nouveau.next = suivant
@@ -62,7 +73,7 @@ class LinkedList: #pour modifs et commandes
         else: 
             nouveau = Cell(item)
             precedent = courant.prev
-            # insérer entre previous et courant
+            #insérer entre previous et courant car dernier
             courant.prev = nouveau
             nouveau.next = courant
             nouveau.prev = precedent
@@ -70,7 +81,7 @@ class LinkedList: #pour modifs et commandes
         return False 
 
     #Q2
-    #nouvelle fin
+    #nouvelle tete
     def insert_first(self, item):
         nouveau = Cell(item)
         if self.first is None and self.last is None:
@@ -84,8 +95,8 @@ class LinkedList: #pour modifs et commandes
             self.first.prev = nouveau
             self.last.next = nouveau
             self.first = nouveau
-    #nouvelle tete
-    def insert_fin(self, item):
+    #nouvelle fin
+    def insert_last(self, item):
         nouveau = Cell(item)
         if self.first is None and self.last is None:
             nouveau.next = nouveau
@@ -159,8 +170,9 @@ class LinkedList: #pour modifs et commandes
             courant=courant.next
         courant.prev.next=courant.next
         courant.next.prev=courant.prev
-    
-    #Q8 - concatène deux listes (liste fin de self)
+
+    #Q8 - concatène deux listes 
+        #(liste devient fin de self)
     def extend(self, liste: LinkedList) -> LinkedList:
         self.last.next = liste.first
         liste.last.prev = self.last
@@ -170,8 +182,8 @@ class LinkedList: #pour modifs et commandes
     
 if __name__ == "__main__":
     chaine = LinkedList()
-    chaine.insert_fin(10)
-    chaine.insert_fin(20)
+    chaine.insert_last(10)
+    chaine.insert_last(20)
     chaine.insert_first(5)  
     print("Taille :", chaine.size())  # Taille : 3
     print(chaine)

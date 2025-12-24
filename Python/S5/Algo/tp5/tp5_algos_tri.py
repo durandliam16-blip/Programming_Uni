@@ -1,13 +1,12 @@
 import random
 import time
 
+##Ex1
 def liste_aleatoire(n):
     liste=[]
     for i in range (n):
         liste.append(random.randint(0,100000))
     return liste
-
-
 
 def tri_insertion(L):
     N = len(L)
@@ -161,7 +160,7 @@ def comptage_digit(tab, exp):
     
     return sortie
 
-
+##Ex2
 start_time = time.time()
 l=liste_aleatoire(10000)
 result = tri_tas(l)
@@ -175,5 +174,5 @@ Taille  | Insertions | Minimum | Bulles | Fusion  | Rapide | Tas   | Dénombreme
 1000        0.02761    0.0203    0.0445    0.0024   0.0018   0.0016     0.014        0.00144
 10000       2.63628    1.9097    4.8372    0.0336   0.0246   0.0095     0.021        0.01618
 
-== pas tant de diffrence entre nlogn et n, n**2 bien plus long pour 10000
+##Ex10 --> pas tant de diffrence entre nlogn et n, n**2 bien plus long pour 10000
 """

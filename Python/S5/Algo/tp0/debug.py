@@ -6,3 +6,10 @@ while u != 1:
     else: # si u est pair:
         u /= 2 # alors u est divise par 2
 print('La conjecture de Syracuse est verifiee !')
+
+"""
+Debuger avec Pycharm :
+- Poser un point d'arret sur gauche num ligne
+- Select run/debug
+- Use différentes commandes au dessus terminal
+"""

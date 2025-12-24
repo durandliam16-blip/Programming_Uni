@@ -1,3 +1,4 @@
+#Problème spécifique - Ex3
 from __future__ import annotations
 from typing import Optional, List, Any
 import copy
@@ -12,7 +13,8 @@ class LinkedList:
         self.head: Optional['Cell'] = None
         self.size = 0
     def append(self, value: int):
-        """Ajoute un élément en fin de liste (pour construire la liste)."""
+        """Ajoute un élément en fin de liste 
+            (pour construire la liste)."""
         new_cell = Cell(value)
         if self.size == 0:
             self.head = new_cell
@@ -52,7 +54,7 @@ class LinkedList:
         # Le noeud qui suit le bloc à inverser (le (k+1)-ième)
         after_block = new_head.next 
         # Le noeud qui précède le bloc (la queue de la liste complète)
-        tail = self.head.prev 
+        tail = self.head.prev
         # --- Inversion des pointeurs à l'intérieur du bloc de k éléments ---
         curr = old_head
         for _ in range(k):

@@ -1,38 +1,4 @@
-#Ex3
-import random
-def devine_nb():
-    nb=random.randint(1,100)
-    guess=1000
-    while guess!=nb:
-        guess=int(input("Devine le nombre "))
-        if guess==nb:
-            print("bravo")
-        elif guess>nb:
-            print("nb est plus petit")
-        else:
-            print("nb est plus grand")
-
-#Ex4
-def choisit_nb():
-    nb=int(input("choisit un nombre entre 1 et 100 "))
-    guess=random.randint(1,100)
-    min,max=1,100
-    L=[]
-    while guess!=nb:
-        if guess in L:
-            print("tricheur")
-        L.append(guess)
-        print("mon guess est ",guess)
-        rep_user=int(input("0 si nb plus petit et 1 si nb plus grand: "))
-        if rep_user==1:
-            min=guess
-            guess=int((min+max)/2)
-        else:
-            max = guess
-            guess = int((max + min) / 2)
-    print("bravo")
-
-#Ex5
+##Ex5
 def agregation():
     new,total=0,0
     min=10000000
@@ -49,7 +15,7 @@ def agregation():
             min=new
         print(f"Le minimum est {min}, le maximum est {max} et enfin on a la moyenne {moy}")
 
-#Ex6
+##Ex6
 """
 Si n pair (ex 8) on represente equipe sous forme polygone avec l'equipe
     pivot au centre de la figure puis les autres aux noeuds.
@@ -105,7 +71,7 @@ def generer_calendrier2(n):
         for i in range(1, nb_matchs_par_journee + 1):
             # Calcul des équipes locales et visiteuses selon la formule
             if i == 1:
-                # --- 🆕 FORMULE SPÉCIALE POUR LE PREMIER MATCH ---
+                # --- FORMULE SPÉCIALE POUR LE PREMIER MATCH ---
                 equipe_locale = n_prime if n_prime % 2 == 0 else 0
             else:
                 equipe_locale = ((j + i - 2) % (n_prime - 1)) + 1
@@ -120,7 +86,7 @@ def generer_calendrier2(n):
             else:
                 print(f"  équipe {equipe_locale} reçoit équipe {equipe_visiteuse}")
 
-#Ex7
+##Ex7
 def transcriprion_calcul():
     formule = str(input("Donne ton calcul (format: ValOpéVal=): "))
     liste_ope=["+","*","%","/"]
