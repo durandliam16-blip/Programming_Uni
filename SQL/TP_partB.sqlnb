@@ -10,3 +10,76 @@ cells:
 
       -- Rating(rID, mID, stars, ratingDate)"
     languageId: oracle-sql
+  - kind: 2
+    value: "-- 10\r
+
+      SELECT\r
+
+      \    m.title,\r
+
+      \    MIN(ra.ratingDate) AS first_rating_date --car veut plus petit et pas
+      une seul\r
+
+      FROM Movie m\r
+
+      LEFT JOIN Rating ra ON ra.mID = m.mID --Left pour garder les vals null\r
+
+      GROUP BY m.title;"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- 11 : Trouver le(s) film(s) ayant la meilleure note en moyenne.\r
+
+      SELECT m.title, AVG(stars) FROM Movie m \r
+
+      INNER JOIN Rating ra ON ra.mID = m.mID\r
+
+      GROUP BY m.title\r
+
+      HAVING AVG(ra.stars) = (SELECT MAX(AVG(stars)) FROM Rating ra2\r
+
+      \                            GROUP BY ra2.mID);"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- 12 : Trouver la différence entre ...\r
+
+      SELECT ABS(avant-apres) FROM (\r
+
+      SELECT * FROM (\r
+
+      \    SELECT AVG(note) avant FROM \r
+
+      \        (SELECT m.title, AVG(ra.stars) note FROM Movie m INNER JOIN
+      Rating ra ON ra.mID = m.mID \r
+
+      \        WHERE m.year_ < 1980 GROUP BY m.title))\r
+
+      ,\r
+
+      \    (SELECT AVG(note2) apres FROM \r
+
+      \        (SELECT m.title, AVG(ra.stars) note2 FROM Movie m INNER JOIN
+      Rating ra ON ra.mID = m.mID \r
+
+      \        WHERE m.year_ > 1980 GROUP BY m.title)));"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- 13 \r
+
+      SELECT m.director, m.title, ra.stars\r
+
+      FROM Movie m\r
+
+      JOIN Rating ra ON m.mID = ra.mID\r
+
+      WHERE m.director IS NOT NULL\r
+
+      \  AND ra.stars =\r
+
+      \        (SELECT MAX(ra2.stars)\r
+
+      \         FROM Rating ra2\r
+
+      \         JOIN Movie m2 ON m2.mID = ra2.mID\r
+
+      \         WHERE m2.director = m.director);"
+    languageId: oracle-sql

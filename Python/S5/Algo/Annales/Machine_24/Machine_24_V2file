@@ -1,0 +1,107 @@
+import random
+
+# Q1 - Structure de données (File/Queue car FIFO selon )
+class Tube:
+    def __init__(self):
+        self.items = []
+    def enfiler(self, roche):
+        self.items.append(roche)
+    def defiler(self):
+        if not self.isEmpty():
+            return self.items.pop(0) # FIFO: premier arrivé, premier sorti 
+        return None
+    def isEmpty(self):
+        return len(self.items) == 0
+
+class Perseverance:
+    def __init__(self):
+        # Tubes initiaux
+        self.tube1 = Tube() # <= 10cm
+        self.tube2 = Tube() # 10-30cm
+        self.tube3 = Tube() # > 30cm
+        # Tubes d'origine
+        self.origines = {
+            "magmatique": Tube(), "metamorphique": Tube(),
+            "sedimentaire": Tube(), "biogenique": Tube()
+        }
+
+    # Q2 - Fonctions de base
+    def stocker_roche(self, roche):
+        d = roche['diametre']
+        if d <= 10: 
+            self.tube1.enfiler(roche)
+        elif d <= 30: 
+            self.tube2.enfiler(roche)
+        else: 
+            self.tube3.enfiler(roche)
+
+    # Q3 - Analyse
+    def analyser_roche(self):
+        tunes = [self.tube1, self.tube2, self.tube3]
+        tube = random.choice(tunes) # Choix aléatoire
+        if tube.isEmpty(): 
+            return
+        
+        roche = tube.defiler()
+        score = roche['durete'] * roche['dilatation']
+        if 1 <= score <= 10: 
+            origin = "magmatique"
+        elif 10 < score <= 20: 
+            origin = "metamorphique"
+        elif 20 < score <= 50: 
+            origin = "sedimentaire"
+        else: 
+            origin = "biogenique"
+
+        self.origines[origin].enfiler(roche)
+
+    # Q5 - Palindrome récursif
+    # Un palindrome est un mot qui se lit de la même façon dans les deux sens
+    def est_palindrome_rec(self, mot):
+        if len(mot) <= 1: #cas simple
+            return True
+        if mot[0] != mot[-1]: #cas simple
+            return False
+        return self.est_palindrome_rec(mot[1:-1])
+
+    def verif_texture_tube2(self):
+        # 1. On crée d'abord une variable vide pour stocker le mot final
+        mot = ""
+        # 2. On parcourt chaque roche présente dans le tube n°2
+        for roche in self.tube2.items:
+            # 3. On extrait le caractère de texture de la roche actuelle
+            lettre = roche['texture']
+            # 4. On ajoute cette lettre à la fin de notre mot
+            mot = mot + lettre
+        # À la fin de la boucle, la variable 'mot' contient toutes les textures collées.
+        return self.est_palindrome_rec(mot)
+
+# Q6 - Arbre Binaire
+class Noeud:
+    def __init__(self, poids):
+        self.poids = poids
+        self.gauche = None
+        self.droite = None
+"""Sans la classe Arbre : Tu manipules directement la racine (un objet Noeud). 
+C'est plus rapide à écrire pendant un examen de 1h30.
+Tu passes simplement racine en paramètre à tes fonctions."""
+
+def inserer_abr(racine, poids):
+    if racine is None: 
+        return Noeud(poids)
+    if poids < racine.poids:
+        racine.gauche = inserer_abr(racine.gauche, poids)
+    elif poids > racine.poids:
+        racine.droite = inserer_abr(racine.droite, poids)
+    return racine
+
+def court_chemin(racine, cible, chemin=""):
+    if racine is None: 
+        return None
+    if racine.poids == cible: 
+        return chemin + str(racine.poids)
+    if cible < racine.poids:
+        res = court_chemin(racine.gauche, cible, chemin + str(racine.poids) + " -> ")
+    else:
+        res = court_chemin(racine.droite, cible, chemin + str(racine.poids) + " -> ")
+    return res if res else "Poids non présent"

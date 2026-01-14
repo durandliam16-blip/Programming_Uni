@@ -41,3 +41,5 @@ insert into Rating values(206, 107, 3, '15-01-2011');
 insert into Rating values(206, 106, 5, '19-01-2011');
 insert into Rating values(207, 107, 5, '20-01-2011');
 insert into Rating values(208, 104, 3, '02-01-2011');
+
+commit;
