@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Panneau de Contrôle API</title>
+    <style>
+        /* CSS simple pour organiser l'interface */
+        body { font-family: Arial; max-width: 800px; margin: 20px auto; background: #f0f2f5; }
+        .bloc { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input { display: block; width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
+        
+        /* Couleurs des boutons */
+        .btn-post { background: #28a745; color: white; } /* Vert pour Créer */
+        .btn-put { background: #ffc107; color: black; }  /* Jaune pour Modifier */
+        .btn-delete { background: #dc3545; color: white; } /* Rouge pour Supprimer */
+        
+        .user-card { border-bottom: 1px solid #eee; padding: 10px; display: flex; justify-content: space-between; }
+        #section-edition { display: none; border: 2px solid #ffc107; } /* Caché par défaut */
+    </style>
+</head>
+<body>
+
+    <h1>Ma Super API SQLite 🚀</h1>
+
+    <div class="bloc">
+        <h2>1. Ajouter un utilisateur (POST)</h2>
+        <input type="text" id="post-nom" placeholder="Nom complet">
+        <input type="email" id="post-email" placeholder="Adresse email">
+        <button class="btn-post" onclick="ajouterUtilisateur()">Envoyer à la DB</button>
+    </div>
+
+    <div id="section-edition" class="bloc">
+        <h2>2. Modifier un utilisateur (PUT)</h2>
+        <input type="hidden" id="edit-id"> <input type="text" id="edit-nom">
+        <input type="email" id="edit-email">
+        <button class="btn-put" onclick="sauvegarderModification()">Confirmer le changement</button>
+        <button onclick="document.getElementById('section-edition').style.display='none'">Annuler</button>
+    </div>
+
+    <div class="bloc">
+        <h2>3. Liste des données (GET)</h2>
+        <button onclick="chargerListe()">Actualiser</button>
+        <div id="affichage-liste">
+            </div>
+    </div>
+
+    <script>
+        // L'adresse de ton serveur FastAPI
+        const API_BASE = "http://127.0.0.1:8000";
+
+        // --- FONCTION GET (LIRE) ---
+        async function chargerListe() {
+            // On fait une requête GET à l'API
+            const reponse = await fetch(`${API_BASE}/utilisateurs`);
+            const utilisateurs = await reponse.json(); // On transforme le JSON en liste JS
+            
+            const conteneur = document.getElementById('affichage-liste');
+            conteneur.innerHTML = ""; // On vide la liste actuelle pour ne pas doubler
+
+            // Pour chaque utilisateur dans la base, on crée du HTML
+            utilisateurs.forEach(user => {
+                conteneur.innerHTML += `
+                    <div class="user-card">
+                        <span><strong>ID:${user.id}</strong> - ${user.nom}</span>
+                        <div>
+                            <button class="btn-put" onclick="remplirFormulaire(${user.id}, '${user.nom}', '${user.email}')">Modifier</button>
+                            <button class="btn-delete" onclick="supprimerUser(${user.id})">Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- FONCTION POST (AJOUTER) ---
+        async function ajouterUtilisateur() {
+            const n = document.getElementById('post-nom').value;
+            const e = document.getElementById('post-email').value;
+
+            // On envoie les infos dans l'URL (comme ton code Python le demande)
+            await fetch(`${API_BASE}/utilisateurs?nom=${n}&email=${e}`, {
+                method: 'POST'
+            });
+
+            // On vide les champs et on rafraîchit la liste
+            document.getElementById('post-nom').value = "";
+            document.getElementById('post-email').value = "";
+            chargerListe();
+        }
+
+        // --- FONCTION DELETE (SUPPRIMER) ---
+        async function supprimerUser(id) {
+            if (confirm("Es-tu sûr de vouloir supprimer cet utilisateur ?")) {
+                // On appelle l'URL /utilisateurs/ID avec la méthode DELETE
+                const res = await fetch(`${API_BASE}/utilisateurs/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    alert("Utilisateur supprimé !");
+                    chargerListe(); // On recharge la liste pour voir le changement
+                } else {
+                    alert("Erreur lors de la suppression");
+                }
+            }
+        }
+
+        // --- FONCTION DE PREPARATION (PUT) ---
+        function remplirFormulaire(id, nom, email) {
+            // On affiche le bloc de modification
+            document.getElementById('section-edition').style.display = 'block';
+            // On remplit les champs avec les données actuelles
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-nom').value = nom;
+            document.getElementById('edit-email').value = email;
+            // On remonte la page pour voir le formulaire
+            window.scrollTo(0,0);
+        }
+
+        // --- FONCTION D'ENVOI (PUT) ---
+        async function sauvegarderModification() {
+            const id = document.getElementById('edit-id').value;
+            const n = document.getElementById('edit-nom').value;
+            const e = document.getElementById('edit-email').value;
+
+            await fetch(`${API_BASE}/utilisateurs/${id}?nom=${n}&email=${e}`, {
+                method: 'PUT'
+            });
+
+            document.getElementById('section-edition').style.display = 'none';
+            chargerListe();
+        }
+
+        // Au chargement de la page, on affiche la liste directement
+        chargerListe();
+    </script>
+</body>
+</html>
