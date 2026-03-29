@@ -1,0 +1,114 @@
+def tri_insertion(arr):
+    """Parcourt la liste et insère chaque élément à sa place dans la partie déjà triée."""
+    n = len(arr)
+    for i in range(1, n):
+        cle = arr[i]
+        j = i - 1
+        while j >= 0 and cle < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = cle
+    return arr
+
+def tri_selection(arr):
+    """Recherche le plus petit élément et le place au début, puis recommence."""
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+def tri_bulles(arr):
+    """Compare les éléments adjacents et les échange s'ils sont dans le mauvais ordre."""
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+def tri_fusion(arr):
+    """Divise la liste en deux, trie chaque moitié et les fusionne (Diviser pour régner)."""
+    if len(arr) <= 1:
+        return arr
+    
+    mid = len(arr) // 2
+    gauche = tri_fusion(arr[:mid])
+    droite = tri_fusion(arr[mid:])
+    
+    return _fusionner(gauche, droite)
+
+def _fusionner(gauche, droite):
+    resultat = []
+    i = j = 0
+    while i < len(gauche) and j < len(droite):
+        if gauche[i] < droite[j]:
+            resultat.append(gauche[i])
+            i += 1
+        else:
+            resultat.append(droite[j])
+            j += 1
+    resultat.extend(gauche[i:])
+    resultat.extend(droite[j:])
+    return resultat
+
+def tri_rapide(arr):
+    """Choisit un pivot et place les éléments plus petits à gauche et plus grands à droite."""
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    gauche = [x for x in arr if x < pivot]
+    milieu = [x for x in arr if x == pivot]
+    droite = [x for x in arr if x > pivot]
+    return tri_rapide(gauche) + milieu + tri_rapide(droite)
+
+def tri_denombrement(arr):
+    """Compte l'occurrence de chaque nombre (efficace pour les entiers positifs)."""
+    if not arr: return arr
+    max_val = max(arr)
+    counts = [0] * (max_val + 1)
+    for x in arr:
+        counts[x] += 1
+    
+    resultat = []
+    for i, count in enumerate(counts):
+        resultat.extend([i] * count)
+    return resultat
+
+def tri_base(arr):
+    """Trie les nombres chiffre par chiffre, des unités aux plus grands (Radix Sort)."""
+    if not arr: return arr
+    max_val = max(arr)
+    exp = 1
+    while max_val // exp > 0:
+        arr = _tri_comptage_pour_base(arr, exp)
+        exp *= 10
+    return arr
+
+def _tri_comptage_pour_base(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+    for i in range(n):
+        index = (arr[i] // exp) % 10
+        count[index] += 1
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+    i = n - 1
+    while i >= 0:
+        index = (arr[i] // exp) % 10
+        output[count[index] - 1] = arr[i]
+        count[index] -= 1
+        i -= 1
+    return output
+
+# --- Zone de Test ---
+ma_liste = [64, 34, 25, 12, 22, 11, 90]
+
+print(f"Liste originale : {ma_liste}")
+print(f"Tri Fusion      : {tri_fusion(ma_liste[:])}")
+print(f"Tri Rapide      : {tri_rapide(ma_liste[:])}")
+print(f"Tri Dénombrement: {tri_denombrement(ma_liste[:])}")

@@ -1,6 +1,6 @@
 cells:
   - kind: 2
-    value: "-- Partie B\r
+    value: "-- Partie B, jointures\r
 
       \r
 
@@ -42,9 +42,7 @@ cells:
   - kind: 2
     value: "-- 12 : Trouver la différence entre ...\r
 
-      SELECT ABS(avant-apres) FROM (\r
-
-      SELECT * FROM (\r
+      SELECT ABS(avant-apres) FROM (SELECT * FROM (\r
 
       \    SELECT AVG(note) avant FROM \r
 
@@ -71,7 +69,7 @@ cells:
 
       JOIN Rating ra ON m.mID = ra.mID\r
 
-      WHERE m.director IS NOT NULL\r
+      WHERE m.director IS NOT NULL -- Car ignore les réalisateurs inconnues\r
 
       \  AND ra.stars =\r
 
@@ -81,5 +79,7 @@ cells:
 
       \         JOIN Movie m2 ON m2.mID = ra2.mID\r
 
-      \         WHERE m2.director = m.director);"
+      \         WHERE m2.director = m.director); \r
+
+      \          -- dernier WHERE pour s'assurer de prendre que le courant"
     languageId: oracle-sql

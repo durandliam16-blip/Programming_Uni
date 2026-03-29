@@ -1,0 +1,246 @@
+cells:
+  - kind: 2
+    value: "-- Partie C, contraintes\r
+
+      \r
+
+      -- Movie(mID, title, year_, director)\r
+
+      -- Reviewer(rID, name_)\r
+
+      -- Rating(rID, mID, stars, ratingDate)"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q1 i\r
+
+      \r
+
+      ALTER TABLE Movie \r
+
+      ADD CONSTRAINT PK_Movie PRIMARY KEY (mID);\r
+
+      \r
+
+      ALTER TABLE Reviewer \r
+
+      ADD CONSTRAINT PK_Reviewer PRIMARY KEY (rID);\r
+
+      \r
+
+      ALTER TABLE Rating \r
+
+      ADD CONSTRAINT PK_Rating PRIMARY KEY (rID, mID, ratingdate);\r
+
+      \r
+
+      ALTER TABLE Rating \r
+
+      ADD CONSTRAINT FK_Rating_Reviewer \r
+
+      \    FOREIGN KEY (rID) REFERENCES Reviewer(rID)\r
+
+      \    ON DELETE CASCADE;\r
+
+      \r
+
+      ALTER TABLE Rating \r
+
+      ADD CONSTRAINT FK_Rating_Movie \r
+
+      \    FOREIGN KEY (mID) REFERENCES Movie(mID)\r
+
+      \    ON DELETE CASCADE;\r
+
+      \r
+
+      /* DELETE FROM Movie WHERE mID = 10;\r
+
+      Sans ON DELETE CASCADE, la suppression échoue car des notes existent.\r
+
+      Avec CASCADE, toutes les notes liées disparaissent automatiquement →
+      cohérence.*/\r\n"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q1 ii\r
+
+      ALTER TABLE Movie \r
+
+      ADD CONSTRAINT UQ_Movie_Title UNIQUE (title);\r
+
+      \r
+
+      ALTER TABLE Reviewer\r
+
+      ADD CONSTRAINT UQ_Reviewer_Name UNIQUE (name_);\r
+
+      \r
+
+      /* INSERT INTO Movie(title, year_, director)\r
+
+      VALUES ('Titanic', 1997, 'James Cameron');\r
+
+      \r
+
+      INSERT INTO Movie(title, year_, director)\r
+
+      VALUES ('Titanic', 1953, 'Jean Negulesco');\r
+
+      \r
+
+      Contraintes d'unicité empêchent l’ambiguïté : impossible d’avoir deux
+      titres identiques. */"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q1 iii\r
+
+      ALTER TABLE Movie\r
+
+      MODIFY title NOT NULL;\r
+
+      \r
+
+      ALTER TABLE Rating\r
+
+      MODIFY stars NOT NULL;\r
+
+      \r
+
+      /* INSERT INTO Rating(rID, mID, stars) VALUES (1, 5, NULL);\r
+
+      Rejeté → on garantit un minimum de cohérence. */"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q1 iv\r
+
+      ALTER TABLE Movie\r
+
+      ADD CONSTRAINT CHK_Year CHECK (year_ >= 1888);\r
+
+      \r
+
+      ALTER TABLE Rating\r
+
+      ADD CONSTRAINT CHK_Stars CHECK (stars BETWEEN 1 AND 5);\r
+
+      \r
+
+      /* INSERT INTO Movie(title, year_, director)\r
+
+      VALUES ('Prehistoric Movie', 1200, 'Unknown');\r
+
+      \r
+
+      Rejeté car le premier film date de 1888 → bon garde-fou. */"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q1 v\r
+
+      -- comme contrainte de domaine mais pour plusieurs atts\r
+
+      ALTER TABLE Rating\r
+
+      ADD CONSTRAINT CHK_Rating_Consistency\r
+
+      CHECK (\r
+
+      \    NOT (stars = 5 AND ratingDate IS NULL)\r
+
+      );\r
+
+      \r
+
+      /* INSERT INTO Rating(rID, mID, stars, ratingDate)\r
+
+      VALUES (1, 2, 5, NULL);\r
+
+      Rejeté : note = 5 sans date → CHECK déclenché. */"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q2 v \r
+
+      \r
+
+      CREATE ASSERTION valid_years\r
+
+      CHECK (NOT EXISTS (\r
+
+      \    SELECT * FROM Movie WHERE year_ > EXTRACT(YEAR FROM CURRENT_DATE)\r
+
+      ));\r
+
+      -- Quelqu’un tente d’insérer un film “Avatar 3” avec l’année 2035 → rejet,
+      car année future."
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q2 vi\r
+
+      CREATE TRIGGER limit_daily_ratings\r
+
+      BEFORE INSERT ON Rating\r
+
+      FOR EACH ROW\r
+
+      WHEN (NEW.ratingDate IS NOT NULL)\r
+
+      BEGIN\r
+
+      \    IF (SELECT COUNT(*) \r
+
+      \        FROM Rating \r
+
+      \        WHERE rID = NEW.rID \r
+
+      \          AND ratingDate = NEW.ratingDate) >= 10 THEN\r
+
+      \        RAISE_APPLICATION_ERROR(-20001, 'Trop de notes aujourd’hui.');\r
+
+      \    END IF;\r
+
+      END;\r
+
+      -- Un utilisateur spamme 50 notes le même jour → trigger bloque au-delà de
+      10."
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q2 vii\r
+
+      CREATE FUNCTION FilmAge(y INT)\r
+
+      RETURNS INT\r
+
+      AS\r
+
+      \    RETURN (EXTRACT(YEAR FROM CURRENT_DATE) - y);\r
+
+      /* SELECT title, FilmAge(year_) AS age FROM Movie;\r
+
+      Permet d’obtenir automatiquement l’âge des films. */"
+    languageId: oracle-sql
+  - kind: 2
+    value: "-- q2 viii\r
+
+      CREATE PROCEDURE RateAllMovies(directorName TEXT, reviewerID INT)\r
+
+      AS\r
+
+      BEGIN\r
+
+      \    INSERT INTO Rating(rID, mID, stars)\r
+
+      \    SELECT reviewerID, mID, 5\r
+
+      \    FROM Movie\r
+
+      \    WHERE director = directorName\r
+
+      \    ON CONFLICT DO NOTHING;\r
+
+      END;\r
+
+      -- CALL RateAllMovies('Steven Spielberg', 12);"
+    languageId: oracle-sql
+  - kind: 2
+    value: "/* Trigger auto et sans para\r
+
+      Procédure manuel et contient paras */"
+    languageId: oracle-sql
