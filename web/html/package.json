@@ -1,0 +1,17 @@
+{
+  "name": "TP_Web_et_XML_1",
+  "version": "1.0.0",
+  "description": "Premier TP de Technologies Web et XML",
+  "scripts": {
+    "start": "gulp",
+    "eval": "node autoeval-tp1.js"
+  },
+  "dependencies": {
+    "ansi-colors": "^4.1.3",
+    "browser-sync": "^2.29.3",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-html": "^4.0.0",
+    "jsdom": "^24.0.0"
+  }
+}

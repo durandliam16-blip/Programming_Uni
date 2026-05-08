@@ -1,0 +1,19 @@
+facebook
+  normal: 0 -70px
+  hover: 0 -56px
+
+twitter
+  normal: 0 -28px
+  hover: 0 -42px
+
+tumblr
+  normal: 0 -126px
+  hover: 0 -98px
+
+google
+  normal: 0 -112px
+  hover: 0 -84px;
+
+rss
+  normal: 0 -14px
+  hover: 0 0px
